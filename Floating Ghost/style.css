@@ -20,5 +20,11 @@ body {
     height: 100px;
     border-radius: 50%; /* Make it circular */
     pointer-events: none; /* Prevent interference with pointer */
-    transition: transform 0.2s ease, left 0.05s, top 0.05s; /* Smooth animation */
+    transition: all 3s ease; /* Smooth animation */
+}
+
+img {
+    width: 100%; /* Ensure the ghost image scales properly */
+    height: 100%; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensure the image fits inside the ghost div */
 }

@@ -1,45 +1,35 @@
- // Get the ghost element
- const ghost = document.querySelector('.ghost');
+// Get the ghost element
+const ghost = document.querySelector('.ghost');
 
- // Store the last mouse position
- let lastMouseX = 0;
+// Function to generate a random position within the viewport
+function getRandomPosition() {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
 
- // Timeout ID for resetting rotation
- let resetTimeout;
+    const randomX = Math.floor(Math.random() * (windowWidth - 100)); // Subtract ghost size to stay in bounds
+    const randomY = Math.floor(Math.random() * (windowHeight - 100));
+    
+    return { x: randomX, y: randomY };
+}
 
- // Add a mousemove event listener
- document.addEventListener('mousemove', (event) => {
-     // Get the mouse's X and Y coordinates
-     const mouseX = event.clientX;
-     const mouseY = event.clientY;
+// Function to move the ghost randomly
+function moveGhost() {
+    const { x, y } = getRandomPosition();
+    ghost.style.left = `${x}px`;
+    ghost.style.top = `${y}px`;
 
-     // Update the ghost's position to follow the mouse
-     ghost.style.left = mouseX + 'px';
-     ghost.style.top = mouseY + 'px';
+    // Apply random rotation for a fun effect
+    const randomRotation = Math.random() > 0.5 ? 'rotate(10deg)' : 'rotate(-10deg)';
+    ghost.style.transform = randomRotation;
 
-     // Determine the direction of movement
-     const direction = mouseX > lastMouseX ? 'right' : 'left';
+    // Schedule the next random movement
+    setTimeout(moveGhost, 2700); // Moves every 1 second
+}
 
-     // Rotate the ghost based on the direction
-     if (direction === 'right') {
-         ghost.style.transform = 'rotate(10deg)';
-     } else {
-         ghost.style.transform = 'rotate(-10deg)';
-     }
+// Start moving the ghost
+moveGhost();
 
-     // Clear the previous timeout to reset rotation
-     clearTimeout(resetTimeout);
-
-     // Update the lastMouseX position
-     lastMouseX = mouseX;
-
-     // Set a timeout to reset the rotation after 200ms of no movement
-     resetTimeout = setTimeout(() => {
-         ghost.style.transform = 'rotate(0deg)';
-     }, 200); // Reset after 200ms of no movement
- });
-
- // Add smooth reset after mouse leaves
- document.addEventListener('mouseleave', () => {
-     ghost.style.transform = 'rotate(0deg)';
- }, 200);
+// Handle window resize to adjust the bounds
+window.addEventListener('resize', () => {
+    moveGhost();
+});
